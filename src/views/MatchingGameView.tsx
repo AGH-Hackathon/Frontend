@@ -3,6 +3,7 @@ import { memo, useCallback, useState } from "react";
 import { ContainedButton } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
 import { SERVER_URL } from "../const";
+import { Timer } from "../components/Timer";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -91,7 +92,9 @@ export const MatchingGameView = memo((props) => {
                     <DndList items={labels} setItems={setLabels} />
                 </StyledLabels>
             </StyledList>
+
             <ContainedButton onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</ContainedButton>
+            <Timer time={20}/>
         </StyledContainer>
     )
 })
