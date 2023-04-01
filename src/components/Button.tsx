@@ -1,7 +1,8 @@
-import {Button, ButtonProps, styled} from "@mui/material"
+import { Button, ButtonProps, styled } from "@mui/material"
 
 const StyledButton = styled(Button)({
-  padding: '10px',
+    padding: '10px',
+    background: '#303F9F',
 })
 
 export const OutlinedButton = (props: ButtonProps) => {

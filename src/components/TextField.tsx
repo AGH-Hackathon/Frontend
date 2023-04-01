@@ -1,5 +1,4 @@
-import { styled, TextField, TextFieldProps} from "@mui/material"
-import {BodyTypography} from "./Typography";
+import { styled, TextField, TextFieldProps } from "@mui/material"
 
 const StyledTextField = styled(TextField)({
     width: "100%",
@@ -11,7 +10,7 @@ export const OutlinedTextField = (props: TextFieldProps) => {
     )
 }
 
-export const ContainedTextField  = (props: TextFieldProps) => {
+export const ContainedTextField = (props: TextFieldProps) => {
     return (
         <StyledTextField variant="filled" {...props} />
     )
