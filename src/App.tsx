@@ -1,10 +1,19 @@
 import { CreateRoomView } from "./views/CreateRoomView";
+import {createTheme, ThemeProvider, Typography} from "@mui/material";
+
+const darkTheme = createTheme({
+    palette: {
+        mode: 'light',
+    },
+});
 
 function App() {
   return (
-    <div className="App">
-      <CreateRoomView />
-    </div>
+      <ThemeProvider theme={darkTheme}>
+          <div className="App">
+              <CreateRoomView />
+          </div>
+      </ThemeProvider>
   );
 }
 
