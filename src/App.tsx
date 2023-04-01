@@ -3,9 +3,14 @@ import SockJsClient from 'react-stomp';
 import { useState } from "react";
 import { MatchingGameView } from "./views/MatchingGameView";
 import { theme } from "./theme";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CreateRoomView } from "./views/CreateRoomView";
+import './global.css'
 
 const StyledContainer = styled(Box)(({ theme }) => ({
-  background: theme.palette.secondary.main
+  background: theme.palette.secondary.main,
+  width: '100vw',
+  height: '100vh',
 }))
 
 function App() {
@@ -23,17 +28,21 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <SockJsClient
+        url={'http://localhost:8008/ws-message'}
+        topics={['/game/29e243ca-0955-47b5-a14b-3d7471d68900']}
+        onConnect={onConnected}
+        onDisconnect={console.log("Disconnected!")}
+        onMessage={(msg: any) => onMessageReceived(msg)}
+        debug={false}
+      />
       <StyledContainer>
-        <SockJsClient
-          url={'http://localhost:8080/ws-message'}
-          topics={['/topic/message']}
-          onConnect={onConnected}
-          onDisconnect={console.log("Disconnected!")}
-          onMessage={(msg: any) => onMessageReceived(msg)}
-          debug={false}
-        />
-        {/* <CreateRoomView /> */}
-        {<MatchingGameView />}
+        <BrowserRouter>
+          <Routes>
+            <Route path='create-room' element={<CreateRoomView />} />
+            <Route path='/game' element={<MatchingGameView />} />
+          </Routes>
+        </BrowserRouter>
       </StyledContainer>
     </ThemeProvider>
   );

@@ -1,17 +1,10 @@
-import { Button, ButtonProps, styled } from "@mui/material"
+import { Button as MuiButton, ButtonProps, styled } from "@mui/material"
 
-const StyledButton = styled(Button)({
-    padding: '10px',
-    background: '#303F9F',
-})
+const StyledButton = styled(MuiButton)(({ theme }) => ({
+    background: theme.palette.success.main,
+}))
 
-export const OutlinedButton = (props: ButtonProps) => {
-    return (
-        <StyledButton variant="outlined" {...props} />
-    )
-}
-
-export const ContainedButton = (props: ButtonProps) => {
+export const Button = (props: ButtonProps) => {
     return (
         <StyledButton variant="contained" {...props} />
     )

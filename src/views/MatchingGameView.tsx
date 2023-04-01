@@ -1,6 +1,6 @@
-import { Box, Button, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { memo, useCallback, useState } from "react";
-import { ContainedButton } from "../components/Button";
+import { Button } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
 import { SERVER_URL } from "../const";
 import { Timer } from "../components/Timer";
@@ -82,16 +82,23 @@ export const MatchingGameView = memo((props) => {
             imageId: image.id,
             labelId: labels[index].id
         }))
+        console.log(SERVER_URL)
         const res = await fetch(`${SERVER_URL}`, {
             method: 'POST',
-            body: JSON.stringify({ answers }),
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({ message: 'siema' })
         })
-        console.log(res)
+        const json = await res.json()
+        console.log(json)
     }, [labels])
 
     return (
         <StyledContainer>
-            <StyledTimer time={20}/>
+            <StyledTimer time={20} />
             <StyledList>
                 <StyledImages>
                     {images.map(({ id, url }) => <StyledImage key={id} src={url} alt={id.toString()} />)}
@@ -100,9 +107,8 @@ export const MatchingGameView = memo((props) => {
                     <DndList items={labels} setItems={setLabels} />
                 </StyledLabels>
             </StyledList>
-
-            <ContainedButton onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</ContainedButton>
-     
+            <Timer time={20} />
+            <Button onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</Button>
         </StyledContainer>
     )
 })

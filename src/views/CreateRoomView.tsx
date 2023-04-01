@@ -1,6 +1,6 @@
 import { Box, Card, styled } from "@mui/material";
 import { memo } from "react";
-import { ContainedButton } from "../components/Button";
+import { Button } from "../components/Button";
 import { CustomSlider } from "../components/Slider";
 import { BodyTypography, TitleTypography } from "../components/Typography";
 import { useState } from "react";
@@ -85,7 +85,7 @@ export const CreateRoomView = memo(() => {
             )}
           />
         </Box>
-        <ContainedButton type="submit" style={{ marginLeft: "auto" }}>Submit</ContainedButton>
+        <Button type="submit" style={{ marginLeft: "auto" }}>Submit</Button>
       </StyledForm>
     </StyledCard >
   )
