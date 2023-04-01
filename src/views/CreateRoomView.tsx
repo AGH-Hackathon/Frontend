@@ -1,12 +1,10 @@
-import { Card, styled } from "@mui/material";
+import { Box, Card, styled } from "@mui/material";
 import { memo } from "react";
 import { ContainedButton } from "../components/Button";
 import { CustomSlider } from "../components/Slider";
 import { BodyTypography, TitleTypography } from "../components/Typography";
 import { useState } from "react";
-import { SERVER_URL } from "../const";
 import { Controller, useForm } from 'react-hook-form'
-
 
 enum CreateRoomError {
   ServerError = 'server-error',
@@ -18,15 +16,22 @@ type CreateRoomType = {
   imageAmount: number;
   roundAmount: number;
 }
+
 const StyledCard = styled(Card)({
   display: "flex",
   flexDirection: "column",
-  maxWidth: "800px",
+  maxWidth: "320px",
   margin: "auto",
-  padding: "20px",
+  padding: "32px",
   "& > *": {
     margin: "10px 0"
   }
+})
+
+const StyledForm = styled('form')({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: "32px",
 })
 
 const createRoom = async (data: CreateRoomType) => {
@@ -58,26 +63,30 @@ export const CreateRoomView = memo(() => {
 
   return (
     <StyledCard>
-      <form onSubmit={handleSubmit(createRoom)}>
+      <StyledForm onSubmit={handleSubmit(createRoom)}>
         <TitleTypography>Create room</TitleTypography>
-        <BodyTypography>Number of photos</BodyTypography>
-        <Controller
-          control={control}
-          name="imageAmount"
-          render={({ field }) => (
-            <CustomSlider {...field} min={1} max={20} />
-          )}
-        />
-        <BodyTypography>Time</BodyTypography>
-        <Controller
-          control={control}
-          name="roundAmount"
-          render={({ field }) => (
-            <CustomSlider {...field} min={1} max={20} />
-          )}
-        />
+        <Box>
+          <BodyTypography>Number of photos</BodyTypography>
+          <Controller
+            control={control}
+            name="imageAmount"
+            render={({ field }) => (
+              <CustomSlider {...field} min={1} max={20} />
+            )}
+          />
+        </Box>
+        <Box>
+          <BodyTypography>Time</BodyTypography>
+          <Controller
+            control={control}
+            name="roundAmount"
+            render={({ field }) => (
+              <CustomSlider {...field} min={1} max={20} />
+            )}
+          />
+        </Box>
         <ContainedButton type="submit" style={{ marginLeft: "auto" }}>Submit</ContainedButton>
-      </form>
-    </StyledCard>
+      </StyledForm>
+    </StyledCard >
   )
 })
