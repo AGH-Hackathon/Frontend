@@ -2,12 +2,20 @@ import type { Identifier, XYCoord } from 'dnd-core'
 import type { FC } from 'react'
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
-import {Card, styled} from "@mui/material";
+import { Box, styled } from "@mui/material";
 
-const StyledCard = styled(Card)({
+const StyledCard = styled(Box)(({ theme }) => ({
+  boxSizing: 'border-box',
   width: "100%",
-  padding: "20px",
-})
+  height: theme.spacing(10),
+  padding: theme.spacing(0, 2),
+  background: theme.palette.primary.main,
+  color: 'white',
+  fontFamily: 'Inter',
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '14px',
+}))
 
 export interface CardProps {
   id: any
@@ -29,10 +37,10 @@ export const ItemTypes = {
 export const DndItem: FC<CardProps> = ({ id, text, index, moveCard }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [{ handlerId }, drop] = useDrop<
-      DragItem,
-      void,
-      { handlerId: Identifier | null }
-      >({
+    DragItem,
+    void,
+    { handlerId: Identifier | null }
+  >({
     accept: ItemTypes.CARD,
     collect(monitor) {
       return {
@@ -53,7 +61,7 @@ export const DndItem: FC<CardProps> = ({ id, text, index, moveCard }) => {
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
 
       const hoverMiddleY =
-          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
 
       const clientOffset = monitor.getClientOffset()
 
@@ -86,8 +94,8 @@ export const DndItem: FC<CardProps> = ({ id, text, index, moveCard }) => {
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
   return (
-      <StyledCard ref={ref} style={{ opacity }} data-handler-id={handlerId}>
-        {text}
-      </StyledCard>
+    <StyledCard ref={ref} style={{ opacity }} data-handler-id={handlerId}>
+      {text}
+    </StyledCard>
   )
 }

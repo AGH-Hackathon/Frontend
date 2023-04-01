@@ -1,13 +1,12 @@
-import { CreateRoomView } from "./views/CreateRoomView";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, styled, ThemeProvider } from "@mui/material";
 import SockJsClient from 'react-stomp';
 import { useState } from "react";
+import { MatchingGameView } from "./views/MatchingGameView";
+import { theme } from "./theme";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'light',
-  },
-});
+const StyledContainer = styled(Box)(({ theme }) => ({
+  background: theme.palette.secondary.main
+}))
 
 function App() {
 
@@ -23,8 +22,8 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <div className="App">
+    <ThemeProvider theme={theme}>
+      <StyledContainer>
         <SockJsClient
           url={'http://localhost:8080/ws-message'}
           topics={['/topic/message']}
@@ -33,8 +32,9 @@ function App() {
           onMessage={(msg: any) => onMessageReceived(msg)}
           debug={false}
         />
-        <CreateRoomView />
-      </div>
+        {/* <CreateRoomView /> */}
+        {<MatchingGameView />}
+      </StyledContainer>
     </ThemeProvider>
   );
 }
