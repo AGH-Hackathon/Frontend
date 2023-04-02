@@ -48,7 +48,7 @@ export const CreateRoomView = memo(() => {
   })
 
   const [loading, setLoading] = useState(false)
-  const [roomId, setRoomId] = useState<string>()
+  const [roomId, setRoomId] = useState<string>('29e243ca-0955-47b5-a14b-3d7471d68900')
 
   const createRoom = async (data: CreateRoomType) => {
     try {
@@ -85,16 +85,16 @@ export const CreateRoomView = memo(() => {
 
   if (!!roomId) {
     return (
-      <RoomView roomId={roomId} startGame={startGame}/>
+      <RoomView roomId={roomId} startGame={startGame} />
     )
   }
 
   if (loading) {
     return (
-      <Loading label={"Room is creating..."}/>
+      <Loading label={"Room is creating..."} />
     )
   }
-   
+
   return (
     <StyledCard>
       <StyledForm onSubmit={handleSubmit(createRoom)}>

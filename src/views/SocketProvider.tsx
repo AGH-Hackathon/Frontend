@@ -22,14 +22,14 @@ type GameMessage = {
 export const SocketProvider = () => {
   const { room_id } = useParams()
 
-  const [isGameStarted, setIsGameStarted] = useState(false)
+  const [isGameStarted, setIsGameStarted] = useState(true)
 
   const onConnected = () => {
     console.log("Connected!!")
   }
 
   const onMessageReceived = (msg: GameMessage) => {
-    console.log(msg.action)
+    console.log(msg)
     switch (msg.action) {
       case GameAction.GameStart:
         if (!isGameStarted) {
@@ -66,7 +66,7 @@ export const SocketProvider = () => {
           isGameStarted={isGameStarted}
         />
       ) : (
-        <Loading label={"Loading..."}/>
+        <Loading label={"Loading..."} />
       )}
     </>
   )
