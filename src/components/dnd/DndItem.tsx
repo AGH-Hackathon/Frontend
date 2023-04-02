@@ -47,7 +47,7 @@ export const DndItem: FC<CardProps> = ({ id, text, index, moveCard }) => {
         handlerId: monitor.getHandlerId(),
       }
     },
-    hover(item: DragItem, monitor) {
+    drop(item: DragItem, monitor) {
       if (!ref.current) {
         return
       }
@@ -58,25 +58,7 @@ export const DndItem: FC<CardProps> = ({ id, text, index, moveCard }) => {
         return
       }
 
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
-
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-
-      const clientOffset = monitor.getClientOffset()
-
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
-
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
-      }
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
-      }
-
       moveCard(dragIndex, hoverIndex)
-
       item.index = hoverIndex
     },
   })

@@ -22,16 +22,15 @@ export const DndList = (props) => {
   const { items, setItems } = props
 
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-    setItems((prevCards: Item[]) =>
-      update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex] as Item],
-        ],
-      }),
-    )
-  }, [])
-
+    setItems((prevCards: Item[]) => {
+      const newCards = [...prevCards];
+      const draggedItem = newCards[dragIndex];
+      newCards[dragIndex] = newCards[hoverIndex];
+      newCards[hoverIndex] = draggedItem;
+      return newCards;
+    });
+  }, []);
+  
   const renderCard = useCallback(
     (card: { id: number; text: string }, index: number) => {
       return (
