@@ -1,15 +1,12 @@
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { SubtitleTypography } from "./Typography";
 import { Typography } from "@mui/material";
 
+const renderTime = ({ remainingTime }) => {
+  return (
+    <Typography variant="h4" style={{ color: "#FFFFFF" }} >{remainingTime}</Typography>
+  );
+};
 
-
-const renderTime = ({ remainingTime }) => {  
-    return (
-        <Typography variant="h4" style={{color: "#FFFFFF"}} >{remainingTime}</Typography>
-    );
-  };
-  
 
 export const Timer = (props) => {
     

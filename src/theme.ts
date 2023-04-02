@@ -8,5 +8,8 @@ export const theme = createTheme({
     secondary: {
       main: "#1F232C",
     },
+    success: {
+      main: 'rgba(73, 190, 37, 0.6)',
+    }
   }
 })

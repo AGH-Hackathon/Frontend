@@ -1,8 +1,11 @@
-import { Box, Button, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { memo, useCallback, useState } from "react";
-import { ContainedButton } from "../components/Button";
+import { Button } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
-import { SERVER_URL } from "../const";
+import { SERVER_URL, SOCKET_URL } from "../const";
+import { useParams } from 'react-router-dom';
+import SockJsClient from 'react-stomp';
+import useSockjs from 'react-use-sockjs';
 import { Timer } from "../components/Timer";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
@@ -55,7 +58,48 @@ const images = [
     { id: 4, url: '/kobietka.jpeg' },
 ]
 
+enum GameAction {
+    GameStart = 'gameStart',
+    GameEnd = 'gameEnd',
+    RoundStart = 'roundStart',
+    RoundEnd = 'roundEnd',
+}
+
+type GameMessage = {
+    action: GameAction;
+    roundId: string;
+    descriptions: any;
+    images: any;
+}
+
 export const MatchingGameView = memo((props) => {
+
+    const { room_id } = useParams()
+    console.log(`/game/${room_id}`)
+
+    // const { sendMessage } = useSockjs({
+    //     url: SOCKET_URL,
+    //     topics: [`/game/${room_id}`],
+    //     // onMessage: (body, destination) => {
+    //     //     console.log(body, destination);
+    //     // },
+    // });
+
+    // const [message, setMessage] = useState('You server message here.');
+    const [isGameStarted, setIsGameStarted] = useState(true)
+
+    const onConnected = () => {
+        console.log("Connected!!")
+    }
+
+    const onMessageReceived = (msg: GameMessage) => {
+        console.log(msg)
+        switch (msg.action) {
+            case GameAction.GameStart:
+                setIsGameStarted(true)
+        }
+        // setMessage(msg);
+    }
 
     const [labels, setLabels] = useState([
         {
@@ -83,25 +127,42 @@ export const MatchingGameView = memo((props) => {
         }))
         const res = await fetch(`${SERVER_URL}`, {
             method: 'POST',
-            body: JSON.stringify({ answers }),
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({ message: 'siema' })
         })
-        console.log(res)
+        const json = await res.json()
     }, [labels])
 
     return (
-        <StyledContainer>
-            <StyledTimer time={20}/>
-            <StyledList>
-                <StyledImages>
-                    {images.map(({ id, url }) => <StyledImage key={id} src={url} alt={id.toString()} />)}
-                </StyledImages>
-                <StyledLabels>
-                    <DndList items={labels} setItems={setLabels} />
-                </StyledLabels>
-            </StyledList>
-
-            <ContainedButton onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</ContainedButton>
-     
-        </StyledContainer>
+        <>
+            {!isGameStarted ? (
+                <p>Loading...</p>
+            ) : (
+                <StyledContainer>
+                    <SockJsClient
+                        url={SOCKET_URL}
+                        topics={[`/game/${room_id}`]}
+                        onConnect={onConnected}
+                        onDisconnect={console.log("Disconnected!")}
+                        onMessage={(msg: any) => onMessageReceived(msg)}
+                        debug={false}
+                    />
+                    <StyledList>
+                        <StyledTimer time={20} />
+                        <StyledImages>
+                            {images.map(({ id, url }) => <StyledImage key={id} src={url} alt={id.toString()} />)}
+                        </StyledImages>
+                        <StyledLabels>
+                            <DndList items={labels} setItems={setLabels} />
+                        </StyledLabels>
+                    </StyledList>
+                    <Button onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</Button>
+                </StyledContainer>
+            )}
+        </>
     )
 })
