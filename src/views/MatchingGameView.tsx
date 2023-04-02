@@ -17,7 +17,6 @@ const StyledImages = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     width: '100%',
-    backgroudn: theme.palette.primary.main,
     maxWidth: theme.spacing(8),
     gap: theme.spacing(3),
     padding: theme.spacing(3),

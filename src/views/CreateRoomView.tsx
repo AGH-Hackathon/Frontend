@@ -17,7 +17,8 @@ type CreateRoomType = {
   roundAmount: number;
 }
 
-const StyledCard = styled(Card)({
+const StyledCard = styled(Card)(({ theme }) => ({
+  background: theme.palette.primary.main,
   display: "flex",
   flexDirection: "column",
   maxWidth: "320px",
@@ -26,7 +27,8 @@ const StyledCard = styled(Card)({
   "& > *": {
     margin: "10px 0"
   }
-})
+}))
+
 
 const StyledForm = styled('form')({
   display: 'flex',

@@ -1,6 +1,7 @@
 import {styled, Typography, TypographyProps} from "@mui/material"
 
 const StyledTypographyTitle = styled(Typography)({
+  color: "#FFFFFF"
 })
 
 export const TitleTypography = (props: TypographyProps) => {
@@ -11,7 +12,7 @@ export const TitleTypography = (props: TypographyProps) => {
 
 export const SubtitleTypography = (props: TypographyProps) => {
   return (
-      <StyledTypographyTitle variant="h2" {...props} />
+      <StyledTypographyTitle variant="h6" {...props} />
   )
 }
 
