@@ -1,6 +1,6 @@
 import { Box, Card, styled } from "@mui/material";
 import { memo } from "react";
-import { ContainedButton } from "../components/Button";
+import { Button } from "../components/Button";
 import { CustomSlider } from "../components/Slider";
 import { BodyTypography, TitleTypography } from "../components/Typography";
 import { useState } from "react";
@@ -17,22 +17,22 @@ type CreateRoomType = {
   roundAmount: number;
 }
 
-const StyledCard = styled(Card)({
+const StyledCard = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  maxWidth: "320px",
   margin: "auto",
-  padding: "32px",
+  maxWidth: theme.spacing(40),
+  padding: theme.spacing(4),
   "& > *": {
     margin: "10px 0"
   }
-})
+}))
 
-const StyledForm = styled('form')({
+const StyledForm = styled('form')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: "32px",
-})
+  gap: theme.spacing(4),
+}))
 
 const createRoom = async (data: CreateRoomType) => {
   try {
@@ -85,7 +85,7 @@ export const CreateRoomView = memo(() => {
             )}
           />
         </Box>
-        <ContainedButton type="submit" style={{ marginLeft: "auto" }}>Submit</ContainedButton>
+        <Button type="submit" style={{ marginLeft: "auto" }}>Submit</Button>
       </StyledForm>
     </StyledCard >
   )

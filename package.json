@@ -20,9 +20,11 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
+    "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "react-use-websocket": "^4.3.1",
     "typescript": "^4.4.2",
+    "use-sockjs": "^2.6.0",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -53,6 +55,7 @@
     "dnd-core": "^16.0.1",
     "react-hook-form": "^7.43.9",
     "react-stomp": "^5.1.0",
+    "react-use-sockjs": "^0.0.2",
     "sockjs": "^0.3.24"
   }
 }
