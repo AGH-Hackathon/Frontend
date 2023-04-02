@@ -6,8 +6,8 @@ import { BodyTypography, TitleTypography } from "../components/Typography";
 import { useState } from "react";
 import { Controller, useForm } from 'react-hook-form'
 import { SERVER_CREATE_ROOM_URL } from "../const";
-import { WaitingRoomCreatingView } from "./WaitingRoomCreatingView";
 import { RoomView } from "./RoomView";
+import { Loading } from "./Loading";
 
 enum CreateRoomError {
   ServerError = 'server-error',
@@ -88,7 +88,7 @@ export const CreateRoomView = memo(() => {
 
   if (loading) {
     return (
-      <WaitingRoomCreatingView />
+      <Loading label={"Room is creating..."}/>
     )
   }
    

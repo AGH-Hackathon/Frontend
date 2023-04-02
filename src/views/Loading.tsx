@@ -24,12 +24,17 @@ const StyledImage = styled('img')(({ theme }) => ({
   margin: "auto",
 }))
 
-export const WaitingRoomCreatingView = memo(() => {
+export const Loading = memo((props: LoadingProps) => {
 
   return (
     <StyledCard>
-         <SubtitleTypography align="center">Room is creating...</SubtitleTypography>
+         <SubtitleTypography align="center">{props.label}</SubtitleTypography>
          <StyledImage src="/loading.gif" />
     </StyledCard >
   )
 })
+
+
+interface LoadingProps {
+  label: string;
+}

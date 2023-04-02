@@ -4,6 +4,7 @@ import { Button } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
 import { SERVER_URL } from "../const";
 import { Timer } from "../components/Timer";
+import { Loading } from "./Loading";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -110,7 +111,7 @@ export const MatchingGameView = memo(({ isGameStarted }: MatchingGameViewProps) 
     return (
         <>
             {!isGameStarted ? (
-                <p>Loading...</p>
+                <Loading label={"Loading..."}/>
             ) : (
                 <StyledContainer>
                     <StyledList>

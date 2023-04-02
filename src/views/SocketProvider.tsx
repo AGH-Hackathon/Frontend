@@ -3,6 +3,7 @@ import { useState } from 'react'
 import SockJsClient from 'react-stomp';
 import { SOCKET_URL } from "../const";
 import { MatchingGameView } from './MatchingGameView';
+import { Loading } from './Loading';
 
 enum GameAction {
   GameStart = 'gameStart',
@@ -65,7 +66,7 @@ export const SocketProvider = () => {
           isGameStarted={isGameStarted}
         />
       ) : (
-        <p>Loading</p>
+        <Loading label={"Loading..."}/>
       )}
     </>
   )
