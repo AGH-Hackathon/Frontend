@@ -1,6 +1,6 @@
 import { Box, Card, styled } from "@mui/material";
 import { memo } from "react";
-import { ContainedButton } from "../components/Button";
+import { Button } from "../components/Button";
 import { CustomSlider } from "../components/Slider";
 import { BodyTypography, SubtitleTypography, TitleTypography } from "../components/Typography";
 import { useState } from "react";
@@ -42,7 +42,7 @@ export const WaitingForHostView = memo(() => {
     <StyledCard>
          <SubtitleTypography align="center">Please wait for the host to start this meeting. </SubtitleTypography>
          <StyledImage src="./loading-gif.gif" />
-         <ContainedButton onClick={()=>{console.log("TODO cancel")}} sx={{ width: 64, margin: 'auto' }}>Cancel</ContainedButton>
+         <Button onClick={()=>{console.log("TODO cancel")}} sx={{ width: 64, margin: 'auto' }}>Cancel</Button>
 
     </StyledCard >
   )
