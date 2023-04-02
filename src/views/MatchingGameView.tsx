@@ -2,9 +2,7 @@ import { Box, styled } from "@mui/material";
 import { memo, useCallback, useState } from "react";
 import { Button } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
-import { SERVER_URL, SOCKET_URL } from "../const";
-import { useParams } from 'react-router-dom';
-import SockJsClient from 'react-stomp';
+import { SERVER_URL } from "../const";
 import { Timer } from "../components/Timer";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
@@ -57,24 +55,11 @@ const images = [
     { id: 4, url: '/kobietka.jpeg' },
 ]
 
-enum GameAction {
-    GameStart = 'gameStart',
-    GameEnd = 'gameEnd',
-    RoundStart = 'roundStart',
-    RoundEnd = 'roundEnd',
+type MatchingGameViewProps = {
+    isGameStarted: boolean
 }
 
-type GameMessage = {
-    action: GameAction;
-    roundId: string;
-    descriptions: any;
-    images: any;
-}
-
-export const MatchingGameView = memo((props) => {
-
-    const { room_id } = useParams()
-    console.log(`/game/${room_id}`)
+export const MatchingGameView = memo(({ isGameStarted }: MatchingGameViewProps) => {
 
     // const { sendMessage } = useSockjs({
     //     url: SOCKET_URL,
@@ -85,20 +70,6 @@ export const MatchingGameView = memo((props) => {
     // });
 
     // const [message, setMessage] = useState('You server message here.');
-    const [isGameStarted, setIsGameStarted] = useState(true)
-
-    const onConnected = () => {
-        console.log("Connected!!")
-    }
-
-    const onMessageReceived = (msg: GameMessage) => {
-        console.log(msg)
-        switch (msg.action) {
-            case GameAction.GameStart:
-                setIsGameStarted(true)
-        }
-        // setMessage(msg);
-    }
 
     const [labels, setLabels] = useState([
         {
@@ -142,14 +113,6 @@ export const MatchingGameView = memo((props) => {
                 <p>Loading...</p>
             ) : (
                 <StyledContainer>
-                    <SockJsClient
-                        url={SOCKET_URL}
-                        topics={[`/game/${room_id}`]}
-                        onConnect={onConnected}
-                        onDisconnect={console.log("Disconnected!")}
-                        onMessage={(msg: any) => onMessageReceived(msg)}
-                        debug={false}
-                    />
                     <StyledList>
                         <StyledTimer time={20} />
                         <StyledImages>
