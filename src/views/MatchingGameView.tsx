@@ -4,6 +4,7 @@ import { Button } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
 import { SERVER_URL } from "../const";
 import { Timer } from "../components/Timer";
+import { Description, Image } from "./SocketProvider";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -49,46 +50,23 @@ const StyledTimer = styled(Timer)({
     right: 0,
 })
 
-const images = [
-    { id: 1, url: '/kobietka.jpeg' },
-    { id: 2, url: '/kobietka.jpeg' },
-    { id: 3, url: '/kobietka.jpeg' },
-    { id: 4, url: '/kobietka.jpeg' },
-]
-
 type MatchingGameViewProps = {
-    isGameStarted: boolean
+    images: Image[],
+    descriptions: Description[]
 }
 
-export const MatchingGameView = memo(({ isGameStarted }: MatchingGameViewProps) => {
+export const MatchingGameView = memo(({ images, descriptions }: MatchingGameViewProps) => {
 
-    const [labels, setLabels] = useState([
-        {
-            id: 1,
-            text: 'Text1',
-        },
-        {
-            id: 2,
-            text: 'Text2',
-        },
-        {
-            id: 3,
-            text: 'Text3',
-        },
-        {
-            id: 4,
-            text: 'Text4',
-        },
-    ])
+    const [labels, setLabels] = useState(descriptions)
 
     const submitAnswers = useCallback(async () => {
         const answers = images.map((image, index) => ({
-            imageId: image.id,
-            labelId: labels[index].id
+            imageId: image.uuid,
+            labelId: labels[index].uuid
         }))
         const res = await fetch(`${SERVER_URL}`, {
             method: 'POST',
-            body: JSON.stringify({ message: 'siema' })
+            body: JSON.stringify({ answers })
         })
         const json = await res.json()
     }, [labels])
@@ -97,7 +75,7 @@ export const MatchingGameView = memo(({ isGameStarted }: MatchingGameViewProps) 
         <StyledContainer>
             <StyledList>
                 <StyledImages>
-                    {images.map(({ id, url }) => <StyledImage key={id} src={url} alt={id.toString()} />)}
+                    {images.map(({ uuid, url }) => <StyledImage key={uuid} src={url} alt={uuid.toString()} />)}
                 </StyledImages>
                 <StyledLabels>
                     <DndList items={labels} setItems={setLabels} />
