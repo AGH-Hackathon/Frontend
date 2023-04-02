@@ -1,9 +1,9 @@
 import { Box, styled, ThemeProvider } from "@mui/material";
-import { MatchingGameView } from "./views/MatchingGameView";
 import { theme } from "./theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CreateRoomView } from "./views/CreateRoomView";
 import './global.css'
+import { SocketProvider } from "./views/SocketProvider";
 
 const StyledContainer = styled(Box)(({ theme }) => ({
   background: theme.palette.secondary.main,
@@ -18,7 +18,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='create-room' element={<CreateRoomView />} />
-            <Route path='game/:room_id' element={<MatchingGameView />} />
+            <Route path='game/:room_id' element={<SocketProvider />} />
           </Routes>
         </BrowserRouter>
       </StyledContainer>
