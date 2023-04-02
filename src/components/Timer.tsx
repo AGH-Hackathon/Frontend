@@ -9,18 +9,18 @@ const renderTime = ({ remainingTime }) => {
 
 
 export const Timer = (props) => {
-    
-    return (
-        <CountdownCircleTimer
-        size={60}
-        strokeWidth={6}
-        isPlaying
-        duration={props.time}
-        colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-        colorsTime={[props.time, 6, 3, 0]}
-        onComplete={() => ({ shouldRepeat: false, delay: 1 })}
-      >
-        {renderTime}
-      </CountdownCircleTimer>
-    )
+
+  return (
+    <CountdownCircleTimer
+      size={60}
+      strokeWidth={6}
+      isPlaying
+      duration={props.time}
+      colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+      colorsTime={[props.time, 6, 3, 0]}
+      onComplete={() => ({ shouldRepeat: false, delay: 1 })}
+    >
+      {renderTime}
+    </CountdownCircleTimer>
+  )
 }

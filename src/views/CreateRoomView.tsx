@@ -36,22 +36,6 @@ const StyledForm = styled('form')(({ theme }) => ({
   gap: theme.spacing(4),
 }))
 
-const createRoom = async (data: CreateRoomType) => {
-  try {
-    console.log(data)
-    const res = await fetch(`${SERVER_CREATE_ROOM_URL}/room/create`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
-    })
-    console.log(res)
-  } catch (e) {
-    return CreateRoomError.ServerError
-  }
-}
-
 export const CreateRoomView = memo(() => {
 
   const { control, handleSubmit } = useForm<CreateRoomType>({
@@ -61,7 +45,53 @@ export const CreateRoomView = memo(() => {
     }
   })
 
-  const [error, setError] = useState(CreateRoomError.Default)
+  const [loading, setLoading] = useState(false)
+  const [roomId, setRoomId] = useState<string>()
+
+  const createRoom = async (data: CreateRoomType) => {
+    try {
+      setLoading(true)
+      const res = await fetch(`${SERVER_CREATE_ROOM_URL}/room/create`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      })
+      const id = await res.json()
+      setLoading(false)
+      setRoomId(id)
+    } catch (e) {
+      setLoading(false)
+      return CreateRoomError.ServerError
+    }
+  }
+
+  const startGame = async () => {
+    try {
+      const res = await fetch('http://localhost:8008/game/29e243ca-0955-47b5-a14b-3d7471d68900/start')
+      if (res.status === 200) {
+        console.log("game started")
+      }
+    } catch (e) {
+      console.log("error")
+    }
+  }
+
+  if (!!roomId) {
+    return (
+      <>
+        <p>ROOM READY: ID {roomId}</p>
+        <Button onClick={startGame}>Start Game</Button>
+      </>
+    )
+  }
+
+  if (loading) {
+    return (
+      <p>LOADING ROOM</p>
+    )
+  }
 
   return (
     <StyledCard>
@@ -73,17 +103,17 @@ export const CreateRoomView = memo(() => {
             control={control}
             name="image_amount"
             render={({ field }) => (
-              <CustomSlider {...field} min={1} max={20} />
+              <CustomSlider {...field} min={1} max={5} />
             )}
           />
         </Box>
         <Box>
-          <BodyTypography>Time</BodyTypography>
+          <BodyTypography>Number of rounds</BodyTypography>
           <Controller
             control={control}
             name="round_amount"
             render={({ field }) => (
-              <CustomSlider {...field} min={1} max={20} />
+              <CustomSlider {...field} min={1} max={5} />
             )}
           />
         </Box>
