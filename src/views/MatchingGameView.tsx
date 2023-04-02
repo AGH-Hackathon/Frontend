@@ -8,6 +8,7 @@ import { Description, Image } from "./SocketProvider";
 import { Loading } from "./Loading";
 import { JoinRoomView } from "./JoinRoomView";
 import { useParams } from 'react-router-dom'
+import { ScoresView } from "./ScoresView";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -100,7 +101,7 @@ export const MatchingGameView = memo(({ isGameStarted, images, descriptions, rou
     }
 
     if (isGameEnded) {
-        console.log(scoreboard)
+        return <ScoresView score={scoreboard}/>
     }
 
     return (

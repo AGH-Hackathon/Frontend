@@ -25,12 +25,17 @@ const scores = [
 ]
 const totalScore = 20
 
-export const ScoresView = memo(() => {
+type ScoreViewProps = {
+  score: any
+}
+
+export const ScoresView = memo(({score}: ScoreViewProps) => {
+  console.log(score)
   return (
     <StyledCard>
       <TitleTypography align="center">Scores</TitleTypography>
-      <BodyTypography align="center">Max score: {totalScore}</BodyTypography>
-        {scores.map((data, i) => <SubtitleTypography>{i+1}. {data.username} <p style={{ display: 'inline-block', float: 'right', margin: 0 }}>{data.score}</p></SubtitleTypography>)}
+      {/* <BodyTypography align="center">Max score: {totalScore}</BodyTypography> */}
+        {Object.values(score).map((data: any, i) => <SubtitleTypography>{i+1}. {data.username} <p style={{ display: 'inline-block', float: 'right', margin: 0 }}>{`${data.score.correct}/${data.score.total}`}</p></SubtitleTypography>)}
       <Button onClick={()=>{}} sx={{ width: 120, margin: 'auto' }}>Play Again</Button>
     </StyledCard>
   )
