@@ -6,6 +6,7 @@ import { SERVER_URL, SOCKET_URL } from "../const";
 import { useParams } from 'react-router-dom';
 import SockJsClient from 'react-stomp';
 import useSockjs from 'react-use-sockjs';
+import { Timer } from "../components/Timer";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
     display: "flex",
