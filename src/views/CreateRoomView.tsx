@@ -1,5 +1,5 @@
 import { Box, Card, styled } from "@mui/material";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { Button } from "../components/Button";
 import { CustomSlider } from "../components/Slider";
 import { BodyTypography, TitleTypography } from "../components/Typography";
@@ -69,16 +69,19 @@ export const CreateRoomView = memo(() => {
     }
   }
 
-  const startGame = async () => {
+  const startGame = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:8008/game/29e243ca-0955-47b5-a14b-3d7471d68900/start')
+      if (!roomId) {
+        return
+      }
+      const res = await fetch(`http://localhost:8008/game/${roomId}/start`, { method: 'POST' })
       if (res.status === 200) {
         console.log("game started")
       }
     } catch (e) {
       console.log("error")
     }
-  }
+  }, [roomId])
 
   if (!!roomId) {
     return (
