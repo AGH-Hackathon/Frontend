@@ -4,7 +4,6 @@ import { Button } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
 import { SERVER_URL } from "../const";
 import { Timer } from "../components/Timer";
-import { Loading } from "./Loading";
 
 const StyledLabels = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -18,14 +17,14 @@ const StyledImages = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     width: '100%',
-    maxWidth: theme.spacing(8),
+    maxWidth: theme.spacing(16),
     gap: theme.spacing(3),
     padding: theme.spacing(3),
 }))
 
 const StyledImage = styled('img')(({ theme }) => ({
-    width: theme.spacing(8),
-    height: theme.spacing(8),
+    width: theme.spacing(16),
+    height: theme.spacing(16),
     padding: theme.spacing(1),
     background: theme.palette.primary.main,
 }))
@@ -35,13 +34,14 @@ const StyledList = styled(Box)({
     flexDirection: 'row',
     width: '100%',
 })
-const StyledContainer = styled(Box)({
+
+const StyledContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
-    width: '100%',
+    width: theme.spacing(120),
     flexDirection: 'column',
     position: 'relative',
     alignItems: 'flex-end', // align items to the right
-})
+}))
 
 const StyledTimer = styled(Timer)({
     position: 'absolute',
@@ -61,16 +61,6 @@ type MatchingGameViewProps = {
 }
 
 export const MatchingGameView = memo(({ isGameStarted }: MatchingGameViewProps) => {
-
-    // const { sendMessage } = useSockjs({
-    //     url: SOCKET_URL,
-    //     topics: [`/game/${room_id}`],
-    //     // onMessage: (body, destination) => {
-    //     //     console.log(body, destination);
-    //     // },
-    // });
-
-    // const [message, setMessage] = useState('You server message here.');
 
     const [labels, setLabels] = useState([
         {
@@ -98,34 +88,25 @@ export const MatchingGameView = memo(({ isGameStarted }: MatchingGameViewProps) 
         }))
         const res = await fetch(`${SERVER_URL}`, {
             method: 'POST',
-            credentials: "same-origin", // include, *same-origin, omit
-            headers: {
-                "Content-Type": "application/json",
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
             body: JSON.stringify({ message: 'siema' })
         })
         const json = await res.json()
     }, [labels])
 
     return (
-        <>
-            {!isGameStarted ? (
-                <Loading label={"Loading..."}/>
-            ) : (
-                <StyledContainer>
-                    <StyledList>
-                        <StyledTimer time={20} />
-                        <StyledImages>
-                            {images.map(({ id, url }) => <StyledImage key={id} src={url} alt={id.toString()} />)}
-                        </StyledImages>
-                        <StyledLabels>
-                            <DndList items={labels} setItems={setLabels} />
-                        </StyledLabels>
-                    </StyledList>
-                    <Button onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</Button>
-                </StyledContainer>
-            )}
-        </>
+        <StyledContainer>
+            <StyledList>
+                <StyledImages>
+                    {images.map(({ id, url }) => <StyledImage key={id} src={url} alt={id.toString()} />)}
+                </StyledImages>
+                <StyledLabels>
+                    <DndList items={labels} setItems={setLabels} />
+                </StyledLabels>
+                <StyledImages>
+                    <StyledTimer time={20} />
+                </StyledImages>
+            </StyledList>
+            <Button onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</Button>
+        </StyledContainer>
     )
 })

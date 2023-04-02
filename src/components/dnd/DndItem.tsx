@@ -8,6 +8,7 @@ const StyledCard = styled(Box)(({ theme }) => ({
   boxSizing: 'border-box',
   width: "100%",
   height: theme.spacing(10),
+  margin: theme.spacing(4, 0),
   padding: theme.spacing(0, 2),
   background: theme.palette.primary.main,
   color: 'white',
