@@ -18,7 +18,7 @@ export const Timer = (props) => {
       duration={props.time}
       colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
       colorsTime={[props.time, 6, 3, 0]}
-      onComplete={() => ({ shouldRepeat: false, delay: 1 })}
+      onComplete={() => ({ shouldRepeat: true, delay: 1 })}
     >
       {renderTime}
     </CountdownCircleTimer>

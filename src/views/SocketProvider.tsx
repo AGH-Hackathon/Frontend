@@ -13,11 +13,21 @@ enum GameAction {
   RoundEnd = 'roundEnd',
 }
 
+export type Image = {
+  uuid: string;
+  url: string
+}
+
+export type Description = {
+  uuid: string;
+  content: string
+}
+
 type GameMessage = {
   action: GameAction;
   roundId: string;
-  descriptions: any;
-  images: any;
+  descriptions: Image[];
+  images: Description[];
 }
 
 export const SocketProvider = () => {
@@ -25,6 +35,8 @@ export const SocketProvider = () => {
 
   const [isGameStarted, setIsGameStarted] = useState(true)
   const [username, setUsername] = useState()
+  const [descriptions, setIsDescription] = useState([])
+  const [images, setImages] = useState([])
 
   const onConnected = () => {
     console.log("Connected!!")
@@ -44,10 +56,10 @@ export const SocketProvider = () => {
         }
         break;
       case GameAction.RoundStart:
-
+        setIsDescription(msg.descriptions)
+        setImages(msg.images)
         break;
       case GameAction.RoundEnd:
-
         break;
     }
     // setMessage(msg);
@@ -65,7 +77,8 @@ export const SocketProvider = () => {
       />
       {isGameStarted ? (
         <MatchingGameView
-          isGameStarted={isGameStarted}
+          images={images}
+          descriptions={descriptions}
         />
       ) : !username ? (
         <JoinRoomView roomId={room_id} setUsername={setUsername} />
