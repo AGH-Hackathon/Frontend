@@ -5,6 +5,7 @@ import { DndItem } from "./DndItem";
 // @ts-ignore
 import update from 'immutability-helper'
 import { Box, styled } from "@mui/material";
+import { Description } from "../../views/SocketProvider";
 
 
 export interface Item {
@@ -17,12 +18,15 @@ const StyledList = styled(Box)(({ theme }) => ({
   gap: theme.spacing(3),
 }))
 
-export const DndList = (props) => {
+type DndListProps = {
+  items: Description[]
+  setItems: React.Dispatch<React.SetStateAction<Description[]>>
+}
 
-  const { items, setItems } = props
+export const DndList = ({items, setItems}: DndListProps) => {
 
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-    setItems((prevCards: Item[]) => {
+    setItems((prevCards) => {
       const newCards = [...prevCards];
       const draggedItem = newCards[dragIndex];
       newCards[dragIndex] = newCards[hoverIndex];
@@ -32,13 +36,13 @@ export const DndList = (props) => {
   }, []);
   
   const renderCard = useCallback(
-    (card: { id: number; text: string }, index: number) => {
+    (card: Description, index: number) => {
       return (
         <DndItem
-          key={card.id}
+          key={card.uuid}
           index={index}
-          id={card.id}
-          text={card.text}
+          id={card.uuid}
+          text={card.content}
           moveCard={moveCard}
         />
       )

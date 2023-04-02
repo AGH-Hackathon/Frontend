@@ -4,6 +4,7 @@ import { Button } from "../components/Button";
 import { BodyTypography, SubtitleTypography, TitleTypography } from "../components/Typography";
 import { OutlinedTextField } from "../components/TextField";
 import { Controller, useForm } from "react-hook-form";
+import { SOCKET_URL } from "../const";
 
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -35,8 +36,16 @@ export const JoinRoomView = memo((props: JoinRoomView) => {
     }
   })
 
-  const createUser = (data: CreateUserType) => {
-    props.setUsername(data.username)
+  const createUser = async (data: CreateUserType) => {
+    const res = await fetch(`http://localhost:8008/game/${props.roomId}/join`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username: data.username})
+    })
+    const json = await res.json()
+    props.setUsername(json.id)
   }
 
   return (

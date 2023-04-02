@@ -1,10 +1,13 @@
 import { Box, styled } from "@mui/material";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { DndList } from "../components/dnd/DndList";
 import { SERVER_URL } from "../const";
 import { Timer } from "../components/Timer";
 import { Description, Image } from "./SocketProvider";
+import { Loading } from "./Loading";
+import { JoinRoomView } from "./JoinRoomView";
+import { useParams } from 'react-router-dom'
 
 const StyledLabels = styled(Box)(({ theme }) => ({
     display: "flex",
@@ -51,31 +54,60 @@ const StyledTimer = styled(Timer)({
 })
 
 type MatchingGameViewProps = {
+    isGameStarted: boolean,
+    isGameEnded: boolean;
     images: Image[],
     descriptions: Description[]
+    roundId: string
+    scoreboard: any
 }
 
-export const MatchingGameView = memo(({ images, descriptions }: MatchingGameViewProps) => {
+export const MatchingGameView = memo(({ isGameStarted, images, descriptions, roundId, isGameEnded, scoreboard }: MatchingGameViewProps) => {
 
     const [labels, setLabels] = useState(descriptions)
+    const [userId, setUserId] = useState('')
+
+    const {room_id} = useParams()
 
     const submitAnswers = useCallback(async () => {
         const answers = images.map((image, index) => ({
-            imageId: image.uuid,
-            labelId: labels[index].uuid
+            ImageId: image.uuid,
+            descriptionId: labels[index].uuid
         }))
-        const res = await fetch(`${SERVER_URL}`, {
+        const res = await fetch(`http://localhost:8008/game/${room_id}/${roundId}/${userId}`, {
             method: 'POST',
-            body: JSON.stringify({ answers })
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(answers)
         })
         const json = await res.json()
+        console.log(json)
     }, [labels])
+
+    useEffect(() => {
+        setLabels(descriptions)
+    }, [descriptions])
+
+    if (!userId) {
+        return (
+            <JoinRoomView roomId={room_id} setUsername={setUserId}/>
+        )
+    }
+
+    if (!isGameStarted) {
+        return <Loading label='Waiting for host'/>
+    }
+
+    if (isGameEnded) {
+        console.log(scoreboard)
+    }
 
     return (
         <StyledContainer>
             <StyledList>
                 <StyledImages>
-                    {images.map(({ uuid, url }) => <StyledImage key={uuid} src={url} alt={uuid.toString()} />)}
+                    {images.map(({ uuid, path }) => <StyledImage key={uuid} src={path} alt={uuid.toString()} />)}
                 </StyledImages>
                 <StyledLabels>
                     <DndList items={labels} setItems={setLabels} />

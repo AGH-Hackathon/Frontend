@@ -49,7 +49,7 @@ export const CreateRoomView = memo(() => {
   })
 
   const [loading, setLoading] = useState(false)
-  const [roomId, setRoomId] = useState<string>('29e243ca-0955-47b5-a14b-3d7471d68900')
+  const [roomId, setRoomId] = useState<string>()
 
   const createRoom = async (data: CreateRoomType) => {
     try {

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import SockJsClient from 'react-stomp';
 import { SOCKET_URL } from "../const";
 import { MatchingGameView } from './MatchingGameView';
@@ -15,7 +15,7 @@ enum GameAction {
 
 export type Image = {
   uuid: string;
-  url: string
+  path: string
 }
 
 export type Description = {
@@ -28,22 +28,24 @@ type GameMessage = {
   roundId: string;
   descriptions: Image[];
   images: Description[];
+  scoreboard: any
 }
 
 export const SocketProvider = () => {
   const { room_id } = useParams()
 
-  const [isGameStarted, setIsGameStarted] = useState(true)
-  const [username, setUsername] = useState()
-  const [descriptions, setIsDescription] = useState([])
+  const [isGameStarted, setIsGameStarted] = useState(false)
+  const [isGameEnded, setIsGameEnded] = useState(false)
+  const [roundId, setRoundId] = useState('')
+  const [descriptions, setDescription] = useState([])
   const [images, setImages] = useState([])
+  const [scoreboard, setScoreboard] = useState<any>()
 
   const onConnected = () => {
     console.log("Connected!!")
   }
 
-  const onMessageReceived = (msg: GameMessage) => {
-    console.log(msg)
+  const onMessageReceived = useCallback((msg: GameMessage) => {
     switch (msg.action) {
       case GameAction.GameStart:
         if (!isGameStarted) {
@@ -51,19 +53,20 @@ export const SocketProvider = () => {
         }
         break;
       case GameAction.GameEnd:
-        if (isGameStarted) {
-          // setIsGameStarted(false)
-        }
+        console.log(isGameStarted, msg)
+          setIsGameEnded(true)
+          setScoreboard(msg.scoreboard)
         break;
       case GameAction.RoundStart:
-        setIsDescription(msg.descriptions)
+        setDescription(msg.descriptions)
+        setRoundId(msg.roundId)
         setImages(msg.images)
         break;
       case GameAction.RoundEnd:
         break;
     }
     // setMessage(msg);
-  }
+  }, [])
 
   return (
     <>
@@ -75,16 +78,14 @@ export const SocketProvider = () => {
         onMessage={(msg: any) => onMessageReceived(msg)}
         debug={false}
       />
-      {isGameStarted ? (
         <MatchingGameView
+          isGameStarted={isGameStarted}
+          isGameEnded={isGameEnded}
           images={images}
           descriptions={descriptions}
+          roundId={roundId}
+          scoreboard={scoreboard}
         />
-      ) : !username ? (
-        <JoinRoomView roomId={room_id} setUsername={setUsername} />
-      ) : (
-        <Loading label={"Loading..."} />
-      )}
     </>
   )
 }
