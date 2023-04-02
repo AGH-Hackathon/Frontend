@@ -24,6 +24,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   background: theme.palette.primary.main,
   display: "flex",
   flexDirection: "column",
+  maxHeight: theme.spacing(40),
   margin: "0 auto",
   maxWidth: theme.spacing(40),
   padding: theme.spacing(4),

@@ -4,6 +4,7 @@ import SockJsClient from 'react-stomp';
 import { SOCKET_URL } from "../const";
 import { MatchingGameView } from './MatchingGameView';
 import { Loading } from './Loading';
+import { JoinRoomView } from './JoinRoomView';
 
 enum GameAction {
   GameStart = 'gameStart',
@@ -23,6 +24,7 @@ export const SocketProvider = () => {
   const { room_id } = useParams()
 
   const [isGameStarted, setIsGameStarted] = useState(true)
+  const [username, setUsername] = useState()
 
   const onConnected = () => {
     console.log("Connected!!")
@@ -65,10 +67,11 @@ export const SocketProvider = () => {
         <MatchingGameView
           isGameStarted={isGameStarted}
         />
+      ) : !username ? (
+        <JoinRoomView roomId={room_id} setUsername={setUsername} />
       ) : (
         <Loading label={"Loading..."} />
       )}
     </>
   )
 }
-
