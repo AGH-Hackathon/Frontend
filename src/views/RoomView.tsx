@@ -18,19 +18,19 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }))
 
 
-const StyledImage = styled('img')(({ theme }) => ({
-  width: theme.spacing(4),
-  height: theme.spacing(4),
-  margin: "auto",
-}))
-
-export const WaitingForHostView = memo(() => {
+export const RoomView = memo((props: RoomViewProps) => {
 
   return (
     <StyledCard>
-         <SubtitleTypography align="center">Please wait for the host to start this meeting. </SubtitleTypography>
-         <StyledImage src="/loading.gif" />
-         <Button onClick={()=>{console.log("TODO cancel")}} sx={{ width: 64, margin: 'auto' }}>Cancel</Button>
+         <SubtitleTypography align="center">Your room is ready </SubtitleTypography>
+         <SubtitleTypography align="center">Room id: {props.roomId} </SubtitleTypography>
+
+         <Button onClick={props.startGame} sx={{ width: 64, margin: 'auto' }}>Start Game</Button>
     </StyledCard >
   )
 })
+
+interface RoomViewProps {
+  roomId: string;
+  startGame: () => Promise<void>;
+}

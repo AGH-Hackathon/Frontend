@@ -6,6 +6,8 @@ import { BodyTypography, TitleTypography } from "../components/Typography";
 import { useState } from "react";
 import { Controller, useForm } from 'react-hook-form'
 import { SERVER_CREATE_ROOM_URL } from "../const";
+import { WaitingRoomCreatingView } from "./WaitingRoomCreatingView";
+import { RoomView } from "./RoomView";
 
 enum CreateRoomError {
   ServerError = 'server-error',
@@ -22,7 +24,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   background: theme.palette.primary.main,
   display: "flex",
   flexDirection: "column",
-  margin: "auto",
+  margin: "0 auto",
   maxWidth: theme.spacing(40),
   padding: theme.spacing(4),
   "& > *": {
@@ -80,19 +82,16 @@ export const CreateRoomView = memo(() => {
 
   if (!!roomId) {
     return (
-      <>
-        <p>ROOM READY: ID {roomId}</p>
-        <Button onClick={startGame}>Start Game</Button>
-      </>
+      <RoomView roomId={roomId} startGame={startGame}/>
     )
   }
 
   if (loading) {
     return (
-      <p>LOADING ROOM</p>
+      <WaitingRoomCreatingView />
     )
   }
-
+   
   return (
     <StyledCard>
       <StyledForm onSubmit={handleSubmit(createRoom)}>

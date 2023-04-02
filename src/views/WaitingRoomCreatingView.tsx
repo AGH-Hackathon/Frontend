@@ -24,13 +24,12 @@ const StyledImage = styled('img')(({ theme }) => ({
   margin: "auto",
 }))
 
-export const WaitingForHostView = memo(() => {
+export const WaitingRoomCreatingView = memo(() => {
 
   return (
     <StyledCard>
-         <SubtitleTypography align="center">Please wait for the host to start this meeting. </SubtitleTypography>
+         <SubtitleTypography align="center">Room is creating...</SubtitleTypography>
          <StyledImage src="/loading.gif" />
-         <Button onClick={()=>{console.log("TODO cancel")}} sx={{ width: 64, margin: 'auto' }}>Cancel</Button>
     </StyledCard >
   )
 })

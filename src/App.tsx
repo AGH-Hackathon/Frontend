@@ -9,6 +9,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
   background: theme.palette.secondary.main,
   width: '100vw',
   height: '100vh',
+  paddingTop: theme.spacing(5)
 }))
 
 function App() {
