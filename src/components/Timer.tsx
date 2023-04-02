@@ -15,7 +15,8 @@ export const Timer = (props) => {
     
     return (
         <CountdownCircleTimer
-        size={100}
+        size={60}
+        strokeWidth={6}
         isPlaying
         duration={props.time}
         colors={["#004777", "#F7B801", "#A30000", "#A30000"]}

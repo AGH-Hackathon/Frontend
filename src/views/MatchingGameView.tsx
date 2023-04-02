@@ -35,11 +35,18 @@ const StyledList = styled(Box)({
     flexDirection: 'row',
     width: '100%',
 })
-
 const StyledContainer = styled(Box)({
     display: 'flex',
     width: '100%',
     flexDirection: 'column',
+    position: 'relative',
+    alignItems: 'flex-end', // align items to the right
+})
+
+const StyledTimer = styled(Timer)({
+    position: 'absolute',
+    top: 0,
+    right: 0,
 })
 
 const images = [
@@ -84,6 +91,7 @@ export const MatchingGameView = memo((props) => {
 
     return (
         <StyledContainer>
+            <StyledTimer time={20}/>
             <StyledList>
                 <StyledImages>
                     {images.map(({ id, url }) => <StyledImage key={id} src={url} alt={id.toString()} />)}
@@ -94,7 +102,7 @@ export const MatchingGameView = memo((props) => {
             </StyledList>
 
             <ContainedButton onClick={submitAnswers} sx={{ width: 64, marginLeft: 'auto' }}>SUBMIT</ContainedButton>
-            <Timer time={20}/>
+     
         </StyledContainer>
     )
 })
